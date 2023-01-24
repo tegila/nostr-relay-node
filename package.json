@@ -1,0 +1,8 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:tegila/nostr-relay-node.git",
+  "author": "Your Name <you@example.com>",
+  "license": "MIT"
+}
