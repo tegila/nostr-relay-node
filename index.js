@@ -1,34 +1,49 @@
 const { WebSocketServer } = require("ws");
 const wss = new WebSocketServer({ port: 8080 });
 
-const mqtt = require('mqtt')
-const client  = mqtt.connect('mqtt://localhost')
+const MQTT = require("mqtt");
+const mqtt = MQTT.connect("mqtt://localhost");
 
-client.on('connect', () => {
+const subscription_ids = new Map();
+
+mqtt.on("connect", () => {
   wss.on("connection", (ws, req) => {
     let ip = req.socket.remoteAddress;
     console.log(`ip: ${ip}`);
     ip = req.headers["x-forwarded-for"].split(",")[0].trim();
     console.log(`ip[x-forwarded-for]: ${ip}`);
-    
+
     ws.on("message", (data) => {
-      console.log('/nostr/message \"%s\"', data);
-      client.publish('/nostr/message', data)
+      console.log('/nostr/message "%s"', data);
+      mqtt.publish("/nostr/message", data);
+      const parsed_data = JSON.parse(data);
+      const [type, subscription_id, filter] = parsed_data;
+      if (type === "REQ") {
+        subscription_ids.set(subscription_id, {
+          ws,
+          req,
+          filter,
+          data: parsed_data,
+        });
+        console.log(subscription_ids);
+      }
     });
   });
-  
-  client.subscribe('/nostr/event/+', (err) => {
-    if (err) {
-      client.publish('/nostr/error', err)
+
+  mqtt.subscribe("/nostr/send/+", (err) => {
+    if (err) return mqtt.publish("/nostr/error", err);
+  });
+
+  mqtt.on("message", (topic, message) => {
+    if (topic.test(/send/)) {
+      // message is Buffer
+      const message_string = message.toString();
+      console.log(topic, message_string);
+      const [, , , subscription_id] = topic.split("/");
+      const { ws } = subscription_ids.get(subscription_id);
+      ws.send(message_string);
     }
-  })
-  client.on('message', function (topic, message) {
-    // message is Buffer
-    const message_string = message.toString();
-    console.log(topic, message_string)
-    //ws.send(message_string);
-  })
-})
+  });
+});
 
-//client.end()
-
+//mqtt.end()
