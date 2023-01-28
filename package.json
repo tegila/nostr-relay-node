@@ -1,8 +1,12 @@
 {
-  "name": "server",
+  "name": "nostr-relay-node",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:tegila/nostr-relay-node.git",
-  "author": "Your Name <you@example.com>",
-  "license": "MIT"
+  "author": "Edson Tegila <npub1axh8jm4x4az263h60wxyhtjxztkwxgdqrw7empn2dq3jsddjq78qjrkd4p>",
+  "license": "MIT",
+  "dependencies": {
+    "mqtt": "^4.3.7",
+    "ws": "^8.12.0"
+  }
 }
