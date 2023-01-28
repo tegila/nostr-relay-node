@@ -1,0 +1,534 @@
+[
+    {
+        "id": "e207b9b530ca3bab",
+        "type": "tab",
+        "label": "nostr indoor",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "04096201fb8550e8",
+        "type": "tab",
+        "label": "pathfinder",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "515ed4537974b8d9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0820b18449cd3ed1",
+        "type": "mqtt in",
+        "z": "e207b9b530ca3bab",
+        "name": "",
+        "topic": "/nostr/message",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "515ed4537974b8d9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "389a36683ba0e827",
+                "169e0602a314a171"
+            ]
+        ]
+    },
+    {
+        "id": "47b9d122a52619ba",
+        "type": "debug",
+        "z": "e207b9b530ca3bab",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "fbee402132f8a0e4",
+        "type": "function",
+        "z": "e207b9b530ca3bab",
+        "name": "ws 2 req",
+        "func": "const [type, nostr_id, ...others] = msg.payload;\n\nreturn Object.assign({}, msg, {\n    payload: {\n        type,\n        nostr_id,\n        others\n    }\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 40,
+        "wires": [
+            [
+                "47b9d122a52619ba",
+                "60fb566e443420d3"
+            ]
+        ]
+    },
+    {
+        "id": "ff3350ce55c4ae14",
+        "type": "inject",
+        "z": "e207b9b530ca3bab",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 320,
+        "wires": [
+            [
+                "8d086c3b4751f1bf"
+            ]
+        ]
+    },
+    {
+        "id": "8d086c3b4751f1bf",
+        "type": "function",
+        "z": "e207b9b530ca3bab",
+        "name": "function 1",
+        "func": "node.warn(global.keys());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 360,
+        "wires": [
+            [
+                "5257110d575d96bf"
+            ]
+        ]
+    },
+    {
+        "id": "5257110d575d96bf",
+        "type": "debug",
+        "z": "e207b9b530ca3bab",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "389a36683ba0e827",
+        "type": "switch",
+        "z": "e207b9b530ca3bab",
+        "name": "REQ|CLOSE?",
+        "property": "payload[0]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "REQ|CLOSE",
+                "vt": "str",
+                "case": true
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 40,
+        "wires": [
+            [
+                "fbee402132f8a0e4"
+            ]
+        ]
+    },
+    {
+        "id": "169e0602a314a171",
+        "type": "switch",
+        "z": "e207b9b530ca3bab",
+        "name": "EVENT?",
+        "property": "payload[0]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "EVENT",
+                "vt": "str",
+                "case": true
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 300,
+        "y": 120,
+        "wires": [
+            [
+                "4e1c75de0359a0fd",
+                "5d8ba0707e369ef9"
+            ]
+        ]
+    },
+    {
+        "id": "a13de210aff6d5de",
+        "type": "debug",
+        "z": "e207b9b530ca3bab",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "5d8ba0707e369ef9",
+        "type": "function",
+        "z": "e207b9b530ca3bab",
+        "name": "ws 2 ev",
+        "func": "const [, event] = msg.payload;\n\nreturn Object.assign({}, msg, {\n    payload: event\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 120,
+        "wires": [
+            [
+                "a13de210aff6d5de",
+                "31cd63e3b17e6b8b"
+            ]
+        ]
+    },
+    {
+        "id": "4e1c75de0359a0fd",
+        "type": "debug",
+        "z": "e207b9b530ca3bab",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 480,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "60fb566e443420d3",
+        "type": "function",
+        "z": "e207b9b530ca3bab",
+        "name": "store filters",
+        "func": "const {type, nostr_id, others} = msg.payload;\nconst reqs = global.get('REQS') || new Map();\nif (type === 'REQ') reqs.set(nostr_id, others);\nif (type === 'CLOSE') reqs.delete(nostr_id);\nglobal.set('REQS', reqs);\n",
+        "outputs": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "31cd63e3b17e6b8b",
+        "type": "link out",
+        "z": "e207b9b530ca3bab",
+        "name": "outdoor",
+        "mode": "link",
+        "links": [
+            "d5962f02be37a288"
+        ],
+        "x": 615,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "d5962f02be37a288",
+        "type": "link in",
+        "z": "04096201fb8550e8",
+        "name": "router",
+        "links": [
+            "31cd63e3b17e6b8b"
+        ],
+        "x": 185,
+        "y": 100,
+        "wires": [
+            [
+                "368422f69e54b9f6"
+            ]
+        ]
+    },
+    {
+        "id": "368422f69e54b9f6",
+        "type": "function",
+        "z": "04096201fb8550e8",
+        "name": "EVENT REMAP",
+        "func": "\nconst reqs = global.get('REQS');\nlet reqs_array = Array.from(reqs, ([key, filters]) => {\n    return filters.map(filter => ({\n        key, filter\n    }))\n});\nreqs_array = reqs_array.flat(1);\n//node.warn(reqs_array);\n\nreturn [reqs_array\n    .map(req => Object.assign({}, msg, {\n        topic: `/nostr/send/${req.key}`,\n        req\n    }))];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 100,
+        "wires": [
+            [
+                "d1bc10600d156986",
+                "a1f69d9812a4f112"
+            ]
+        ]
+    },
+    {
+        "id": "d1bc10600d156986",
+        "type": "debug",
+        "z": "04096201fb8550e8",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "defb99f367e16804",
+        "type": "inject",
+        "z": "04096201fb8550e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"pubkey\":\"3f5734d0d8347e917f3a25a2f84a5ad321349b80a9fbbd50970f7b5529112f20\",\"created_at\":1674863104,\"kind\":1,\"content\":\"hi\",\"tags\":[[\"p\",\"e9ae796ea6af44ad46fa7b8c4bae4612ece321a01bbd9d866a68232835b2078e\"]],\"id\":\"0b59f47d93e1c6581dd763fb23830861094c2dd19049f60e4ca19fd2a8b8c1e6\",\"sig\":\"71e4de274c3664c3463e565032f37b3d96a29be901004212f0c9189a2fb224900bb2e02a4816463828af3f4486ba60c9a11531908a3b19e583c7b65e15d38cb8\"}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 180,
+        "wires": [
+            [
+                "368422f69e54b9f6"
+            ]
+        ]
+    },
+    {
+        "id": "c3389444db64fb50",
+        "type": "mqtt out",
+        "z": "04096201fb8550e8",
+        "name": "",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "515ed4537974b8d9",
+        "x": 570,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a1f69d9812a4f112",
+        "type": "function",
+        "z": "04096201fb8550e8",
+        "name": "kind filter",
+        "func": "if(!msg.req.filter.kinds || msg.req.filter.kinds.includes(msg.payload.kind))\n    return msg;\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 200,
+        "wires": [
+            [
+                "cc2562d248326530",
+                "48cf46b4dfd4f610"
+            ]
+        ]
+    },
+    {
+        "id": "cc2562d248326530",
+        "type": "debug",
+        "z": "04096201fb8550e8",
+        "name": "debug 6",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "48cf46b4dfd4f610",
+        "type": "function",
+        "z": "04096201fb8550e8",
+        "name": "author filter",
+        "func": "if (!msg.req.filter.authors || msg.req.filter.authors.includes(msg.payload.pubkey))\n    return msg;\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "4938dce64cf8989a",
+                "4e8592af32a6a77b"
+            ]
+        ]
+    },
+    {
+        "id": "4938dce64cf8989a",
+        "type": "debug",
+        "z": "04096201fb8550e8",
+        "name": "debug 7",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "4e8592af32a6a77b",
+        "type": "function",
+        "z": "04096201fb8550e8",
+        "name": "#p filter",
+        "func": "if (!msg.req.filter['#p'])\n    return msg;\n\nconst p_tags = msg.payload.tags\n    .filter(([t]) => t === 'p')\n    .map(([,v]) => v);\n\n//node.warn(p_tags);\n\nconst res = msg.req.filter['#p']\n    .reduce((a, p) => a||p_tags.includes(p), false)\n\n//node.warn(res);\n\nif(res) return msg;\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 400,
+        "wires": [
+            [
+                "3e53a2d37ccb458e",
+                "cf3762b110bebbee"
+            ]
+        ]
+    },
+    {
+        "id": "3e53a2d37ccb458e",
+        "type": "debug",
+        "z": "04096201fb8550e8",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "cf3762b110bebbee",
+        "type": "function",
+        "z": "04096201fb8550e8",
+        "name": "[EVENT, ...]",
+        "func": "const { payload, req } = msg;\n\nreturn Object.assign(msg, {\n    payload: `[\"EVENT\", \"${req.key}\", ${JSON.stringify(payload)}]`\n});",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 480,
+        "wires": [
+            [
+                "c3389444db64fb50"
+            ]
+        ]
+    }
+]
