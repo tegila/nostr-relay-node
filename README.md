@@ -9,3 +9,6 @@ nostr relay-server adapter to mqtt written in simple nodejs
 
 # relay routing path finder
 ![close view on routing](./demo3.png)
+
+# updated to remove the routing (waiting to implement in js)
+![routing removal](./demo4.png)
