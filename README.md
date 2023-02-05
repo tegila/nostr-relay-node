@@ -10,15 +10,18 @@ Dependencies:
 * Node.js
 * NODE-RED flow-based development tool
 
-### 1st run wss to mqtt [bridge]
+### 1st run wss relay [nostr] to mqtt [bridge]
 https://github.com/tegila/nostr-relay-node/blob/master/wss.to.mqtt.bridge.js
 
 > node wss.to.mqtt.bridge.js
 
-### 2nd run redis store [bridge]
+### 2nd run mqtt [bridge] to redis [store]
 https://github.com/tegila/nostr-relay-node/blob/master/mqtt.redis.nostr.relay.js
 
 > node mqtt.redis.nostr.relay.js
+
+### 3nd [OPTIONAL] run NODE-RED
+> node-red
 
 You're done!
 
