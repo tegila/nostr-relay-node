@@ -16,13 +16,13 @@ Done:
 nostr relay-server adapter to mqtt written in simple nodejs
 
 # PoC v0 alfa
-![sample working on Node-RED](./image.png)
+![sample working on Node-RED](./images/demo1.png)
 
 # mqtt side of nostr-server
-![input of mqtt-side of nostr](./demo2.png)
+![input of mqtt-side of nostr](./images/demo2.png)
 
 # relay routing path finder
-![close view on routing](./demo3.png)
+![close view on routing](./images/demo3.png)
 
 # updated to remove the routing (waiting to implement in js)
-![routing removal](./demo4.png)
+![routing removal](./images/demo4.png)
