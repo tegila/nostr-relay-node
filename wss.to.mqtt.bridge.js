@@ -8,6 +8,7 @@ const subscription_ids = new Map();
 
 mqtt.on("connect", () => {
   wss.on("connection", (ws, req) => {
+    // use this together with iptables to firewall your relay
     let ip = req.socket.remoteAddress;
     console.log(`ip: ${ip}`);
     ip = req.headers["x-forwarded-for"].split(",")[0].trim();
